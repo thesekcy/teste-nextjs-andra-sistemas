@@ -1,0 +1,13 @@
+.nav_component {
+  background-color: #0052cc;
+  padding: 15px 0;
+
+  .MuiContainer-root {
+    display: flex;
+    justify-content: space-between;
+
+    svg.MuiSvgIcon-root {
+      color: hsl(0, 0%, 100%);
+    }
+  }
+}

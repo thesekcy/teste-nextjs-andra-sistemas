@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+  transition-duration: 200ms !important;
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  -webkit-font-smoothing: antialiased !important;
+  background-color: #fff;
+  overflow: overlay;
+}
+
+::-webkit-scrollbar {
+  width: 0.7em;
+  height: 0.7em;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(228, 228, 228);
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f4f6f8;
+  padding: 0 2px;
+}
+
+.container-fluid {
+  max-width: 1800px !important;
+}
+
+a {
+  text-decoration: none;
+}
+
+input,
+textarea,
+select {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input:active,
+textarea:active,
+select:active {
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+button {
+  all: unset;
+}
+
+.container-fluid {
+  padding-right: 5% !important;
+  padding-left: 5% !important;
+}
+
+.fast-link {
+  font-weight: normal;
+  font-size: 15px;
+  color: #069edb;
+  border-bottom: 1px dashed #069edb;
+  display: flex;
+  align-self: center;
+  float: right;
+}
+
+.fast-link-secondary {
+  font-weight: normal;
+  font-size: 15px;
+  color: #731DD8;
+  border-bottom: 1px dashed #731DD8;
+  display: flex;
+  align-self: center;
+  float: right;
+}
+
+.fix-floating-label:before {
+  content: '';
+  position: absolute;
+  top: 1px; /* border-width (default by BS) */
+  left: 1px; /* border-width (default by BS) */
+  width: calc(100% - 14px); /* to show scrollbar */
+  height: 32px;
+  border-radius: 4px; /* (default by BS) */
+  background-color: #ffffff;
+}
+
+.fix-floating-label textarea.form-control {
+  padding-top: 32px !important; 
+  min-height: 80px; /* not relevant */
+}
