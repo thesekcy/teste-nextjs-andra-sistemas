@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { AuthContext } from './AuthContext'
 import { useApi } from '@/hooks/useApi'
 import * as jwt from 'jsonwebtoken';
@@ -8,28 +8,6 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [user, setUser] = useState<User | null | 'unauthorized'>(null)
   const [authLoading, setAuthLoading] = useState<boolean>(false)
   const api = useApi()
-
-  // useEffect(() => {
-  //   const validateToken = async () => {
-  //     const { storageAuthToken, storageUserId } = getToken()
-
-  //     if (storageAuthToken && storageUserId) {
-  //       try {
-  //         const user = await api.validateToken(storageAuthToken, storageUserId)
-  //         if (user) {
-  //           setUser(user)
-  //           return
-  //         }
-  //         signout()
-  //       } catch (error) {
-  //         signout()
-  //       }
-  //     }else{
-  //       setUser('unauthorized')
-  //     }
-  //   }
-  //   validateToken()
-  // }, [])
 
   const signin = async (email: string, password: string) => {
 

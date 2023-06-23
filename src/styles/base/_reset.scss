@@ -5,6 +5,12 @@
   box-sizing: border-box;
   transition-duration: 200ms !important;
   font-family: "Inter", sans-serif;
+
+  &:focus,
+  &:focus-within,
+  &:focus-visible {
+    outline: none !important;
+  }
 }
 
 body {
@@ -54,43 +60,29 @@ button {
   all: unset;
 }
 
-.container-fluid {
-  padding-right: 5% !important;
-  padding-left: 5% !important;
+p {
+  margin-bottom: 0 !important;
 }
 
-.fast-link {
-  font-weight: normal;
-  font-size: 15px;
-  color: #069edb;
-  border-bottom: 1px dashed #069edb;
-  display: flex;
-  align-self: center;
-  float: right;
+#page-container {
+  position: relative;
+  min-height: 100vh;
 }
 
-.fast-link-secondary {
-  font-weight: normal;
-  font-size: 15px;
-  color: #731DD8;
-  border-bottom: 1px dashed #731DD8;
-  display: flex;
-  align-self: center;
-  float: right;
+#content-wrap {
+  padding-bottom: 2.5rem; /* Footer height */
 }
 
-.fix-floating-label:before {
-  content: '';
-  position: absolute;
-  top: 1px; /* border-width (default by BS) */
-  left: 1px; /* border-width (default by BS) */
-  width: calc(100% - 14px); /* to show scrollbar */
-  height: 32px;
-  border-radius: 4px; /* (default by BS) */
-  background-color: #ffffff;
+.MuiFormLabel-asterisk {
+  color: red;
 }
 
-.fix-floating-label textarea.form-control {
-  padding-top: 32px !important; 
-  min-height: 80px; /* not relevant */
+.MuiCard-root {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+}
+
+.MuiDataGrid-columnHeader:last-child {
+  .MuiDataGrid-columnSeparator.MuiDataGrid-columnSeparator--sideRight {
+    display: none;
+  }
 }

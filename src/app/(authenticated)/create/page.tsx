@@ -1,78 +1,82 @@
 'use client'
-import { Inter } from 'next/font/google'
-import NavComponent from '@/components/NavComponent';
-import Link from 'next/link';
-import { Button, Card, Container, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
-
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import { useState } from 'react';
+import {Card, Container } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { createOrEditFormValues, createOrEditSchema } from '@/schemas/createOrEditSchema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { AuthContext } from '@/contexts/Auth/AuthContext';
+import { useApi } from '@/hooks/useApi';
+import Swal from 'sweetalert2'
+import FormCreateOrEdit from '@/components/FormCreateOrEdit';
 
 export const metadata = {
   title: 'App Next.js',
   description: 'Desc App Next.js',
 }
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
-  const [tipoOperacao, setTipoOperacao] = useState(0)
-  const [financeiro, setFinanceiro] = useState(0)
+export default function RootLayout() {
+  const [values, setValues] = useState<any>({})
+  const auth = useContext(AuthContext)
+  const api = useApi()
+  const { push } = useRouter();
+
+  async function createOperation(dataForm: createOrEditFormValues) {
+    let dataOperation = {
+      "idLista": 1,
+      ...dataForm
+    }
+
+    const token = auth.getToken();
+    const res = await api.createNatOperations(token!, dataOperation)
+
+    console.log(res)
+
+    if (res[0].status === 200) {
+      Swal.fire({
+        title: 'Sucesso!',
+        text: 'Operação incluida com sucesso.',
+        icon: 'success',
+        confirmButtonText: 'Fechar'
+      })
+    } else {
+      Swal.fire({
+        title: 'Erro!',
+        text: 'Erro ao tentar incluir a Operação, tente novamente.',
+        icon: 'error',
+        confirmButtonText: 'Fechar'
+      })
+    }
+    push('/');
+  }
+
+  function leaveOperation() {
+    Swal.fire({
+      title: 'Cancelar operação?',
+      text: "Deseja voltar? Todos os dados serão perdidos.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      cancelButtonText: 'Continuar editando',
+      confirmButtonText: 'Cancelar edição'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        push('/')
+      }
+    })
+  }
 
   return (
     <>
       <Container>
-        <h6>Tela de Pesquisa</h6>
-
-        <hr />
-
+        <h5>Tela de manutenção - Incluir</h5>
         <Card className='mt-4 p-4'>
-          <div className="d-flex gap-2 justify-content-between mb-3">
-            <TextField
-              variant='filled'
-              label="Descrição"
-              type="email"
-              fullWidth
-            />
-
-            <FormControl variant='filled' fullWidth>
-              <InputLabel id="tpOperacao">Tipo de Operação</InputLabel>
-              <Select
-                labelId="tpOperacao"
-                id="tp_operacao"
-                value={tipoOperacao}
-                label="Tipo de Operação"
-                onChange={(e) => setTipoOperacao(Number(e.target.value))}
-              >
-                <MenuItem selected={tipoOperacao === 0} value={0}>Nenhum</MenuItem>
-                <MenuItem selected={tipoOperacao === 1} value={1}>Saída</MenuItem>
-                <MenuItem selected={tipoOperacao === 2} value={2}>Entrada</MenuItem>
-              </Select>
-            </FormControl>
-
-            <FormControl variant='filled' fullWidth>
-              <InputLabel id="tpFinanceiro">Financeiro</InputLabel>
-              <Select
-                labelId="tpFinanceiro"
-                id="tp_financeiro"
-                value={financeiro}
-                label="Financeiro"
-                onChange={(e) => setFinanceiro(Number(e.target.value))}
-              >
-                <MenuItem selected={financeiro === 0} value={0}>Nenhum</MenuItem>
-                <MenuItem selected={financeiro === 1} value={1}>Receber</MenuItem>
-                <MenuItem selected={financeiro === 2} value={2}>Pagar</MenuItem>
-              </Select>
-            </FormControl>
-          </div>
-          <div className="actions d-flex gap-3 justify-content-end">
-            <Button variant='contained' color='success' startIcon={<CheckCircleOutlineIcon />}>Incluir</Button>
-            <Link href="/"><Button variant='contained' color='error' startIcon={<CheckCircleOutlineIcon />}>Cancelar</Button></Link>
-          </div>
-
-
+          <FormCreateOrEdit
+            defaultValues={values}
+            onSubmit={createOperation}
+            onLeave={leaveOperation}
+          />
         </Card>
       </Container>
     </>
