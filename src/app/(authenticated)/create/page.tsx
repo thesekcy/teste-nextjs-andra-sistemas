@@ -1,14 +1,12 @@
 'use client'
-import {Card, Container } from '@mui/material';
+import { Card, Container, Typography } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useContext, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { createOrEditFormValues, createOrEditSchema } from '@/schemas/createOrEditSchema';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { createOrEditFormValues } from '@/schemas/createOrEditSchema';
 import { AuthContext } from '@/contexts/Auth/AuthContext';
 import { useApi } from '@/hooks/useApi';
 import Swal from 'sweetalert2'
-import FormCreateOrEdit from '@/components/FormCreateOrEdit';
+import FormCreateOrEditComponent from '@/components/FormCreateOrEditComponent';
 
 export const metadata = {
   title: 'App Next.js',
@@ -29,8 +27,6 @@ export default function RootLayout() {
 
     const token = auth.getToken();
     const res = await api.createNatOperations(token!, dataOperation)
-
-    console.log(res)
 
     if (res[0].status === 200) {
       Swal.fire({
@@ -70,9 +66,9 @@ export default function RootLayout() {
   return (
     <>
       <Container>
-        <h5>Tela de manutenção - Incluir</h5>
+        <Typography variant="h5">Tela de manutenção - Incluir</Typography>
         <Card className='mt-4 p-4'>
-          <FormCreateOrEdit
+          <FormCreateOrEditComponent
             defaultValues={values}
             onSubmit={createOperation}
             onLeave={leaveOperation}

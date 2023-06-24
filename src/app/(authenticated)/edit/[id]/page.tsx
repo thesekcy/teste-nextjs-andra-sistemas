@@ -1,12 +1,12 @@
 'use client'
 import { useContext, useEffect, useState } from 'react';
-import { Card, Container } from '@mui/material';
+import { Card, Container, Typography } from '@mui/material';
 import { useRouter, useParams } from 'next/navigation';
 import { createOrEditFormValues } from '@/schemas/createOrEditSchema';
 import { AuthContext } from '@/contexts/Auth/AuthContext';
 import { useApi } from '@/hooks/useApi';
 import Swal from 'sweetalert2'
-import FormCreateOrEdit from '@/components/FormCreateOrEdit';
+import FormCreateOrEditComponent from '@/components/FormCreateOrEditComponent';
 
 export const metadata = {
   title: 'App Next.js',
@@ -50,8 +50,6 @@ export default function RootLayout() {
     const token = auth.getToken();
     const res = await api.updateNatOperations(token!, dataOperation)
 
-    console.log(res)
-
     if (res[0].status === 200) {
       Swal.fire({
         title: 'Sucesso!',
@@ -91,9 +89,9 @@ export default function RootLayout() {
     return (
       <>
         <Container>
-          <h5>Tela de manutenção - Editando <strong>{values.nmNatOperacao}</strong></h5>
+        <Typography variant="h5">Tela de manutenção - Editando <strong>{values.nmNatOperacao}</strong></Typography>
           <Card className='mt-4 p-4'>
-            <FormCreateOrEdit
+            <FormCreateOrEditComponent
               defaultValues={values}
               onSubmit={updateOperation}
               onLeave={leaveOperation}

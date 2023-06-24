@@ -1,37 +1,37 @@
 'use client';
 import React, { useContext, useEffect, useState } from 'react';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
-import { Container, Button, TextField, Card } from '@mui/material';
+import { Container, Card, Typography } from '@mui/material';
 import dayjs from 'dayjs';
 import 'dayjs/locale/pt-br';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useApi } from '@/hooks/useApi';
 import { AuthContext } from '@/contexts/Auth/AuthContext';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import Swal from 'sweetalert2';
+import { formatDeleteObject } from '@/functions';
+import SearchBarComponent from '@/components/SearchBarComponent';
+import CustomDatePickerComponent from '@/components/DatePickerComponent';
+import ActionButtonsComponent from '@/components/ActionButtonsComponent';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import SearchIcon from '@mui/icons-material/Search';
-import Link from 'next/link';
+import { Operacao } from '@/types';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { TP_ESTOQUE_CONVERT } from './../../constants/tpEstoqueConvert';
 import { TP_FINANCEIRO_CONVERT } from '@/constants/tpFinanceiroConvert';
-import { formatDeleteObject } from '@/functions';
-import Swal from 'sweetalert2';
+import Link from 'next/link';
+
 
 const Home = () => {
   const today = new Date();
   const priorDate = new Date(new Date().setDate(today.getDate() - 30));
 
-  const [operations, setOperations] = useState<{ id: number }[]>([]);
-  const [rowsToDelete, setRowsToDelete] = useState<[]>([]);
+  const [operations, setOperations] = useState<Operacao[]>([]);
+  const [rowsToDelete, setRowsToDelete] = useState<number[]>([]);
   const [nmNatOperationFilter, setNmNatOperationFilter] = useState({
     operandoTipo: "0",
     operandoValor: "",
     operador: "2"
   });
 
-  const [dataPicker, setDataPicker] = useState({
+  const [dhCadastrouFilter, setDhCadastrouFilter] = useState({
     operandoTipo: "1",
     operandoValor: {
       dataIni: dayjs(priorDate).format("YYYY-MM-DD HH:mm:ss"),
@@ -46,53 +46,13 @@ const Home = () => {
 
   useEffect(() => {
     const getOperations = async () => {
-      const res = await api.getNatOperations(token!, nmNatOperationFilter, dataPicker);
+      const res = await api.getNatOperations(token!, nmNatOperationFilter, dhCadastrouFilter);
       setOperations(res.retorno);
-      console.log(res.retorno);
     };
 
     getOperations();
-  }, [dataPicker]);
+  }, [dhCadastrouFilter]);
 
-  async function deleteOperation(ids: number[]) {
-    const res = await api.deleteNatOperations(token!, formatDeleteObject(ids));
-
-    if (res.every((item: { status: number; }) => item.status === 200)) {
-      setOperations(prevOperations => {
-        const updatedOperations = prevOperations.filter(op => !ids.includes(op.id));
-        return updatedOperations;
-      });
-
-      Swal.fire({
-        title: 'Sucesso!',
-        text: 'Operação excluída com sucesso.',
-        icon: 'success',
-        confirmButtonText: 'Fechar'
-      });
-    } else {
-      const failedItems = res.filter((item: { status: number }) => item.status !== 200);
-      const failedCount = failedItems.length;
-
-      setOperations(prevOperations => {
-        const updatedOperations = prevOperations.filter(op => {
-          return failedItems.findIndex((item: { id: number; }) => item.id === op.id) === -1;
-        });
-        return updatedOperations;
-      });
-
-      Swal.fire({
-        title: 'Houve algum problema!',
-        text: `Houve um problema na exclusão de ${failedCount} item(s). Atualize a página e tente novamente.`,
-        icon: 'warning',
-        confirmButtonText: 'Fechar'
-      });
-    }
-  }
-
-  async function searchOperation() {
-    const res = await api.getNatOperations(token!, nmNatOperationFilter);
-    setOperations(res.retorno);
-  }
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', flex: 1 },
@@ -131,65 +91,92 @@ const Home = () => {
     },
   ];
 
+  async function deleteOperation(ids: number[]) {
+
+    Swal.fire({
+      title: 'Deseja realmente excluir?',
+      text: "Todos os dados excluidos serão perdidos.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Excluir mesmo assim'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await api.deleteNatOperations(token!, formatDeleteObject(ids));
+
+        if (res.every((item: { status: number; }) => item.status === 200)) {
+          setOperations(prevOperations => {
+            const updatedOperations = prevOperations.filter(op => {
+              return op.id !== undefined && !ids.includes(op.id);
+            });
+            return updatedOperations;
+          });
+
+          Swal.fire({
+            title: 'Sucesso!',
+            text: 'Operação excluída com sucesso.',
+            icon: 'success',
+            confirmButtonText: 'Fechar'
+          });
+        } else {
+          const failedItems = res.filter((item: { status: number }) => item.status !== 200);
+          const failedCount = failedItems.length;
+
+          setOperations(prevOperations => {
+            const updatedOperations = prevOperations.filter(op => {
+              return failedItems.findIndex((item: { id: number; }) => item.id === op.id) === -1;
+            });
+            return updatedOperations;
+          });
+
+          Swal.fire({
+            title: 'Houve algum problema!',
+            text: `Houve um problema na exclusão de ${failedCount} item(s). Atualize a página e tente novamente.`,
+            icon: 'warning',
+            confirmButtonText: 'Fechar'
+          });
+        }
+      }
+    })
+
+
+  }
+
+  async function searchOperation() {
+    const res = await api.getNatOperations(token!, nmNatOperationFilter, dhCadastrouFilter);
+    setOperations(res.retorno);
+  }
+
+
   const handleSelectionChange = (selectionModel: any) => {
     setRowsToDelete(selectionModel);
   };
 
+
   return (
     <Container>
-      <h5>Tela de Pesquisa</h5>
+      <Typography variant="h5">Tela de Pesquisa</Typography>
 
-      <Card className='mt-4 p-4'>
-        <div className="d-flex justify-content-between mb-3">
+      <Card className='mt-4 mb-5 p-4'>
+        <div className="d-flex justify-content-between mb-4">
           <div className="filters d-flex gap-2">
-            <div className="search d-flex">
-              <TextField
-                variant='standard'
-                label="Pesquisa"
-                value={nmNatOperationFilter.operandoValor}
-                onChange={(e) => setNmNatOperationFilter(prev => ({ ...prev, operandoValor: e.target.value }))}
-                type="text"
-              />
-              <Button onClick={searchOperation}><SearchIcon /></Button>
-            </div>
+            <SearchBarComponent
+              nmNatOperationFilter={nmNatOperationFilter}
+              setNmNatOperationFilter={setNmNatOperationFilter}
+              searchOperation={searchOperation}
+            />
 
-            <div className="datePicker d-flex gap-2">
-              <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='pt-br'>
-                <DatePicker
-                  maxDate={dayjs().subtract(1, 'day')}
-                  onChange={(newDate) => {
-                    setDataPicker(prev => ({
-                      ...prev,
-                      operandoValor: {
-                        ...prev.operandoValor,
-                        dataIni: dayjs(newDate).format("YYYY-MM-DD HH:mm:ss")
-                      }
-                    }))
-                  }} label="De" defaultValue={dayjs(dataPicker.operandoValor.dataIni)} />
-
-                <DatePicker onChange={(newDate) => {
-                  setDataPicker(prev => ({
-                    ...prev,
-                    operandoValor: {
-                      ...prev.operandoValor,
-                      dataFin: dayjs(newDate).format("YYYY-MM-DD HH:mm:ss")
-                    }
-                  }))
-                }} label="Até" defaultValue={dayjs(dataPicker.operandoValor.dataFin)} />
-              </LocalizationProvider>
-            </div>
+            <CustomDatePickerComponent
+              dhCadastrouFilter={dhCadastrouFilter}
+              setDhCadastrouFilter={setDhCadastrouFilter}
+            />
           </div>
-
-          <div className="actions d-flex gap-2 align-items-center">
-            {rowsToDelete.length > 0 && (
-              <Button onClick={() => deleteOperation(rowsToDelete)} variant='contained' color="error" startIcon={<AddCircleOutlineIcon />}>
-                Excluir {rowsToDelete.length} Itens
-              </Button>
-            )}
-            <Link href='/create'>
-              <Button variant='contained' startIcon={<AddCircleOutlineIcon />}>Incluir</Button>
-            </Link>
-          </div>
+          <ActionButtonsComponent
+            rowsToDelete={rowsToDelete}
+            deleteOperation={deleteOperation}
+          />
         </div>
 
         <DataGrid

@@ -1,4 +1,4 @@
-import { NatOperacao } from '@/types';
+import { DhCadastrou, NatOperacao } from '@/types';
 import axios from 'axios'
 
 const api = axios.create({
@@ -22,7 +22,7 @@ export const useApi = () => ({
     const res = await api.post('/auth/login', { usuEMailLogin: email, usuSenhaLogin: password })
     return res;
   },
-  getNatOperations: async (token: string, nmNatOperacao: NatOperacao, dhCadastrou = []) => {
+  getNatOperations: async (token: string, nmNatOperacao: NatOperacao, dhCadastrou: DhCadastrou) => {
     const res = await api.post('/natoperacao/pesquisar', {
       nmNatOperacao: [nmNatOperacao],
       dhCadastrou: [dhCadastrou]
@@ -57,9 +57,6 @@ export const useApi = () => ({
     return res.data
   },
   updateNatOperations: async (token: string, dataOperation: any) => {
-
-    console.log('dataOperation: ', dataOperation)
-
     const res = await api.put('/natoperacao/alterar', {
       lista: [dataOperation],
     }, {
