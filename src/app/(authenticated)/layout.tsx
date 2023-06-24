@@ -32,11 +32,9 @@ export default function RootLayout({
   const { theme } = useContext(ThemeContext)
   return (
 
-    <html lang="en">
-      <head />
-      <body className={`theme-${theme}`}>
-        <>
-          <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+    <div className={`theme-${theme}`}>
+      <>
+        <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
           <div id="page-container">
             <div id="content-wrap">
               <DynamicNavComponent />
@@ -46,7 +44,6 @@ export default function RootLayout({
           </div>
         </ThemeProvider>
       </>
-    </body>
-    </html >
+    </div>
   )
 }

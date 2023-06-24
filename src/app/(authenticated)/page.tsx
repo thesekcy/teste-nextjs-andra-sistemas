@@ -23,6 +23,8 @@ const Home = () => {
   const today = new Date();
   const priorDate = new Date(new Date().setDate(today.getDate() - 30));
 
+  console.log('======================== teste')
+
   const [operations, setOperations] = useState<Operacao[]>([]);
   const [rowsToDelete, setRowsToDelete] = useState<number[]>([]);
   const [nmNatOperationFilter, setNmNatOperationFilter] = useState({
@@ -55,20 +57,18 @@ const Home = () => {
 
 
   const columns: GridColDef[] = [
-    { field: 'id', headerName: 'ID', flex: 1 },
-    { field: 'nmNatOperacao', headerName: 'Descrição', flex: 1 },
+    { field: 'id', headerName: 'ID', flex: 1, minWidth: 0 },
+    { field: 'nmNatOperacao', headerName: 'Descrição', flex: 1, minWidth: 0 },
     {
       field: 'tpEstoque',
       headerName: 'Estoque',
-      description: 'This column has a value getter and is not sortable.',
-      flex: 1,
+      flex: 1, minWidth: 0,
       valueGetter: (params: GridValueGetterParams) => TP_ESTOQUE_CONVERT[Number(params.row.tpEstoque)]
     },
     {
       field: 'tpFinanceiro',
       headerName: 'Financeiro',
-      description: 'This column has a value getter and is not sortable.',
-      flex: 1,
+      flex: 1, minWidth: 0,
       valueGetter: (params: GridValueGetterParams) => TP_FINANCEIRO_CONVERT[Number(params.row.tpFinanceiro)]
     },
     {
@@ -76,6 +76,7 @@ const Home = () => {
       headerName: 'Ações',
       sortable: false,
       flex: 1,
+      minWidth: 0,
       disableColumnMenu: true,
       disableReorder: true,
       headerAlign: 'center',

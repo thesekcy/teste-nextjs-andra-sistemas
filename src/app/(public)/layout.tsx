@@ -17,12 +17,8 @@ export default function RootLayout({
   const isPublicPage = checkIsPublicRoute(pathname)
 
   return (
-    <html lang="en">
-      <body>
-        <>
-          {children}
-        </>
-      </body>
-    </html>
+    <>
+      {children}
+    </>
   )
 }
