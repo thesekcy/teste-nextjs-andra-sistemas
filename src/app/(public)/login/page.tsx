@@ -9,11 +9,6 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Image from 'next/image';
 
-
-export const metadata = {
-  title: 'Andra Sistemas - Teste | Login',
-}
-
 export default function LoginPage() {
   const auth = useContext(AuthContext)
   const [showPassword, setShowPassword] = useState(false);

@@ -6,18 +6,11 @@ import dynamic from 'next/dynamic';
 import { AuthProvider } from '@/contexts/Auth/AuthProveider'
 import "../styles/global.scss"
 import { ThemeProvider } from '@/contexts/Theme/ThemeProveider';
-import { ThemeContext } from '@/contexts/Theme/ThemeContext';
-import { useContext } from 'react';
 
 const DynamicPrivateRoute = dynamic(() => import('@/components/PrivateRoute'), { ssr: false });
 const DynamicPublicRoute = dynamic(() => import('@/components/PublicRoute'), { ssr: false });
 
 const inter = Inter({ subsets: ['latin'] })
-
-export const metadata = {
-  title: 'Andra Sistemas - Teste',
-  description: 'Teste para a vaga da Andra Sistemas, Desenvolvedor Next.js',
-}
 
 export default function RootLayout({
   children,
@@ -30,7 +23,9 @@ export default function RootLayout({
   return (
 
     <html lang="en">
-      <head />
+      <head>
+        <title>Andra Sistemas - Next.Js Teste</title>
+      </head>
       <body className={`${inter.className}`}>
         <>
           {isPublicPage && (
