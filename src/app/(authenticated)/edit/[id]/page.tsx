@@ -8,10 +8,6 @@ import { useApi } from '@/hooks/useApi';
 import Swal from 'sweetalert2'
 import FormCreateOrEditComponent from '@/components/FormCreateOrEditComponent';
 
-export const metadata = {
-  title: 'Andra Sistemas - Teste | Editar',
-}
-
 export default function RootLayout() {
   const [values, setValues] = useState<any>({})
   const auth = useContext(AuthContext)
