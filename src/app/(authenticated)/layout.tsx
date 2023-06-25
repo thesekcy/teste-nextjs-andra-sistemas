@@ -7,11 +7,6 @@ const DynamicNavComponent = dynamic(() => import('@/components/NavComponent'), {
 const DynamicFooterComponent = dynamic(() => import('@/components/FooterComponent'), { ssr: false });
 import 'sweetalert2/src/sweetalert2.scss'
 
-export const metadata = {
-  title: 'App Next.js',
-  description: 'Desc App Next.js',
-}
-
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',

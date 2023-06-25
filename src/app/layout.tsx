@@ -15,8 +15,8 @@ const DynamicPublicRoute = dynamic(() => import('@/components/PublicRoute'), { s
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'App Next.js',
-  description: 'Desc App Next.js',
+  title: 'Andra Sistemas - Teste',
+  description: 'Teste para a vaga da Andra Sistemas, Desenvolvedor Next.js',
 }
 
 export default function RootLayout({

@@ -9,36 +9,18 @@ interface SearchBarProps {
   searchOperation: () => void;
 }
 
-const SearchBarComponent = ({
-  nmNatOperationFilter,
-  setNmNatOperationFilter,
-  searchOperation
-}: SearchBarProps) => {
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(e.target.value);
-  };
-
-  const handleButtonClick = () => {
-    setNmNatOperationFilter(prev => ({
-      ...prev,
-      operandoValor: searchTerm
-    }));
-    searchOperation();
-  };
-
+const SearchBarComponent = ({ nmNatOperationFilter, setNmNatOperationFilter, searchOperation }: SearchBarProps) => {
   return (
     <div className="filters d-flex gap-2">
       <div className="search d-flex">
         <TextField
           variant='standard'
           label="Pesquisa"
-          value={searchTerm}
-          onChange={handleInputChange}
+          value={nmNatOperationFilter.operandoValor}
+          onChange={(e) => setNmNatOperationFilter(prev => ({ ...prev, operandoValor: e.target.value }))}
           type="text"
         />
-        <Button onClick={handleButtonClick}><SearchIcon /></Button>
+        <Button onClick={searchOperation}><SearchIcon /></Button>
       </div>
     </div>
   );
