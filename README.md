@@ -1,34 +1,72 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+Esse é um projeto [Next.js](https://nextjs.org/) criado com [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-First, run the development server:
+  
+
+## Rodando pela primeira vez
+
+  
+
+Primeiramente instale todas as dependencias com.
+
+  
 
 ```bash
-npm run dev
+npm  install
 # or
-yarn dev
-# or
-pnpm dev
+yarn  install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Depois para rodar o projeto basta usar os comandos abaixo:
+```bash
+npm  run  dev
+# or
+yarn  dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Para rodar os testes basta utilizar
+```bash
+npm  run  test
+# or
+yarn  test
+```
+  
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+O projeto ficará disponivel em[http://localhost:3000](http://localhost:3000).
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Sobre o projeto
 
-## Deploy on Vercel
+  O projeto foi desenvolvido para um teste, visando a vaga de Desenvolvedor Nextjs na [Andra Sistemas](andrasistemas.com.br/) e se trata de um CRUD.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+O projeto está disponivel em: https://teste-nextjs-andra-sistemas.vercel.app/
+O email e senha necessario para acessar o projeto foi/é fornecido pela [Andra Sistemas](andrasistemas.com.br/).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+**As técnologias utilizadas no projeto foram:**
+- HTML 5, CSS e Javascript
+- NextJS e ReactJS
+- Typescript
+- Material UI e Bootstrap CSS
+- JSON Web Token
+- SweetAlert2
+- Axios
+- Jest e React Testing Library
+
+  
+## Arquivos e Rotas
+As rotas são baseadas em arquivos, e com as funcionalidades disponibilizadas pelo Next.js 13, como a pasta /app.
+
+As rotas são divididas em Public Routes e Private Routes, e separados como (public) e (authenticated), uma nova maneira de criar grupos de rotas com as novas funcionalidades do Next.js 13.
+
+Rotas disponiveis:
+
+*(public)*
+ - /login
+
+*(authenticated)*
+ - /
+ - /create
+ - /edit/[id]

@@ -3,7 +3,7 @@ import { TextField, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { NatOperacao } from '@/types';
 
-interface SearchBarProps {
+export interface SearchBarProps {
   nmNatOperationFilter: NatOperacao;
   setNmNatOperationFilter: React.Dispatch<React.SetStateAction<NatOperacao>>;
   searchOperation: () => void;
