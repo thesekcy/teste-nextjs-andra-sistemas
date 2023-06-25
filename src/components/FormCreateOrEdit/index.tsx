@@ -29,6 +29,7 @@ const FormCreateOrEdit = ({ defaultValues, onSubmit, onLeave }: { defaultValues:
         <TextField
           required
           label="Descrição"
+          data-testid="descricao"
           fullWidth
           {...register('nmNatOperacao')}
           error={!!errors.descricao}
@@ -42,7 +43,7 @@ const FormCreateOrEdit = ({ defaultValues, onSubmit, onLeave }: { defaultValues:
           render={({ field }) => (
 
             <FormControl fullWidth>
-              <InputLabel id="tpEstoque">Estoque</InputLabel>
+              <InputLabel data-testid="estoque" id="tpEstoque">Estoque</InputLabel>
               <Select
                 label="Estoque"
                 {...register('tpEstoque')}
@@ -64,6 +65,7 @@ const FormCreateOrEdit = ({ defaultValues, onSubmit, onLeave }: { defaultValues:
             <FormControl fullWidth>
               <InputLabel id="tpFinanceiro">Financeiro</InputLabel>
               <Select
+                data-testid="financeiro"
                 label="Financeiro"
                 {...register('tpFinanceiro')}
                 {...field}

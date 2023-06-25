@@ -1,5 +1,4 @@
 'use client'
-import { Inter } from 'next/font/google'
 import { checkIsPublicRoute } from '@/functions'
 import { usePathname } from 'next/navigation'
 import dynamic from 'next/dynamic';
@@ -10,7 +9,6 @@ import { ThemeProvider } from '@/contexts/Theme/ThemeProveider';
 const DynamicPrivateRoute = dynamic(() => import('@/components/PrivateRoute'), { ssr: false });
 const DynamicPublicRoute = dynamic(() => import('@/components/PublicRoute'), { ssr: false });
 
-const inter = Inter({ subsets: ['latin'] })
 
 export default function RootLayout({
   children,
@@ -26,7 +24,7 @@ export default function RootLayout({
       <head>
         <title>Andra Sistemas - Next.Js Teste</title>
       </head>
-      <body className={`${inter.className}`}>
+      <body>
         <>
           {isPublicPage && (
             <AuthProvider>

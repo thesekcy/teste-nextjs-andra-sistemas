@@ -72,6 +72,7 @@ export default function NavComponent() {
 
         <FormGroup>
           <FormControlLabel
+            className='change_theme_text'
             control={<MaterialUISwitch sx={{ m: 1 }} />}
             onChange={() => changeTheme(theme === 'light' ? 'dark' : 'light')}
             checked={theme === 'light' ? false : true}
