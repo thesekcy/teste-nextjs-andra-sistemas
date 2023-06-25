@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { NatOperacao } from '@/types';
+import { OperationsContext } from '@/contexts/Operations/OperationsContext';
 
 export interface SearchBarProps {
-  nmNatOperationFilter: NatOperacao;
-  setNmNatOperationFilter: React.Dispatch<React.SetStateAction<NatOperacao>>;
   searchOperation: () => void;
 }
 
-const SearchBarComponent = ({ nmNatOperationFilter, setNmNatOperationFilter, searchOperation }: SearchBarProps) => {
+const SearchBarComponent = ({ searchOperation }: SearchBarProps) => {
+  const {
+    nmNatOperationFilter,
+    setNmNatOperationFilter
+  } = useContext(OperationsContext)
+
   return (
     <div className="filters d-flex gap-2">
       <div className="search d-flex">
@@ -17,7 +21,7 @@ const SearchBarComponent = ({ nmNatOperationFilter, setNmNatOperationFilter, sea
           variant='standard'
           label="Pesquisa"
           value={nmNatOperationFilter.operandoValor}
-          onChange={(e) => setNmNatOperationFilter(prev => ({ ...prev, operandoValor: e.target.value }))}
+          onChange={(e) => setNmNatOperationFilter({ ...nmNatOperationFilter, operandoValor: e.target.value })}
           type="text"
         />
         <Button onClick={searchOperation}><SearchIcon /></Button>

@@ -7,14 +7,17 @@ import { AuthContext } from '@/contexts/Auth/AuthContext';
 import { useApi } from '@/hooks/useApi';
 import Swal from 'sweetalert2'
 import FormCreateOrEditComponent from '@/components/FormCreateOrEditComponent';
+import { OperationsContext } from '@/contexts/Operations/OperationsContext';
+import { Operacao } from '@/types';
 
 export default function RootLayout() {
   const [values, setValues] = useState<any>({})
   const auth = useContext(AuthContext)
   const api = useApi()
+  const { addOperation } = useContext(OperationsContext)
   const { push } = useRouter();
 
-  async function createOperation(dataForm: createOrEditFormValues) {
+  async function createOperation(dataForm: Operacao) {
     let dataOperation = {
       "idLista": 1,
       ...dataForm
@@ -23,7 +26,12 @@ export default function RootLayout() {
     const token = auth.getToken();
     const res = await api.createNatOperations(token!, dataOperation)
 
+    dataOperation.id = res[0].retorno[0].id
+
+    
     if (res[0].status === 200) {
+      addOperation(dataOperation)
+      
       Swal.fire({
         title: 'Sucesso!',
         text: 'Operação incluida com sucesso.',

@@ -1,7 +1,6 @@
 'use client';
-import React, { useContext, useEffect, useState } from 'react';
-import { Container, Card, Typography } from '@mui/material';
-import dayjs from 'dayjs';
+import React, { useContext, useState } from 'react';
+import { Container, Card, Typography, LinearProgress } from '@mui/material';
 import 'dayjs/locale/pt-br';
 import { useApi } from '@/hooks/useApi';
 import { AuthContext } from '@/contexts/Auth/AuthContext';
@@ -12,48 +11,26 @@ import CustomDatePickerComponent from '@/components/DatePickerComponent';
 import ActionButtonsComponent from '@/components/ActionButtonsComponent';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Operacao } from '@/types';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { TP_ESTOQUE_CONVERT } from './../../constants/tpEstoqueConvert';
 import { TP_FINANCEIRO_CONVERT } from '@/constants/tpFinanceiroConvert';
 import Link from 'next/link';
-
+import { OperationsContext } from '@/contexts/Operations/OperationsContext';
 
 const Home = () => {
-  const today = new Date();
-  const priorDate = new Date(new Date().setDate(today.getDate() - 30));
-
-  console.log('======================== teste')
-
-  const [operations, setOperations] = useState<Operacao[]>([]);
   const [rowsToDelete, setRowsToDelete] = useState<number[]>([]);
-  const [nmNatOperationFilter, setNmNatOperationFilter] = useState({
-    operandoTipo: "0",
-    operandoValor: "",
-    operador: "2"
-  });
-
-  const [dhCadastrouFilter, setDhCadastrouFilter] = useState({
-    operandoTipo: "1",
-    operandoValor: {
-      dataIni: dayjs(priorDate).format("YYYY-MM-DD HH:mm:ss"),
-      dataFin: dayjs(today).format("YYYY-MM-DD HH:mm:ss")
-    },
-    operador: "1"
-  });
-
+  const {
+    loading,
+    operations,
+    setOperations,
+    dhCadastrouFilter,
+    setDhCadastrouFilter,
+    nmNatOperationFilter,
+    setNmNatOperationFilter
+  } = useContext(OperationsContext)
   const auth = useContext(AuthContext);
   const api = useApi();
   const token = auth.getToken();
-
-  useEffect(() => {
-    const getOperations = async () => {
-      const res = await api.getNatOperations(token!, nmNatOperationFilter, dhCadastrouFilter);
-      setOperations(res.retorno);
-    };
-
-    getOperations();
-  }, [dhCadastrouFilter]);
 
 
   const columns: GridColDef[] = [
@@ -150,52 +127,53 @@ const Home = () => {
     setOperations(res.retorno);
   }
 
-
   const handleSelectionChange = (selectionModel: any) => {
     setRowsToDelete(selectionModel);
   };
 
+  if (!loading) {
+    return (
+      <Container>
+        <Typography variant="h5">Tela de Pesquisa</Typography>
 
-  return (
-    <Container>
-      <Typography variant="h5">Tela de Pesquisa</Typography>
+        <Card className='mt-4 mb-5 p-4'>
+          <div className="d-flex justify-content-between mb-4">
+            <div className="filters d-flex gap-2">
+              <SearchBarComponent
+                searchOperation={searchOperation}
+              />
 
-      <Card className='mt-4 mb-5 p-4'>
-        <div className="d-flex justify-content-between mb-4">
-          <div className="filters d-flex gap-2">
-            <SearchBarComponent
-              nmNatOperationFilter={nmNatOperationFilter}
-              setNmNatOperationFilter={setNmNatOperationFilter}
-              searchOperation={searchOperation}
-            />
-
-            <CustomDatePickerComponent
-              dhCadastrouFilter={dhCadastrouFilter}
-              setDhCadastrouFilter={setDhCadastrouFilter}
+              <CustomDatePickerComponent/>
+            </div>
+            <ActionButtonsComponent
+              rowsToDelete={rowsToDelete}
+              deleteOperation={deleteOperation}
             />
           </div>
-          <ActionButtonsComponent
-            rowsToDelete={rowsToDelete}
-            deleteOperation={deleteOperation}
-          />
-        </div>
 
-        <DataGrid
-          rows={operations ? operations : []}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { page: 0, pageSize: 20 },
-            },
-          }}
-          pageSizeOptions={[10, 20, 50, 100]}
-          checkboxSelection
-          disableRowSelectionOnClick
-          onRowSelectionModelChange={handleSelectionChange}
-        />
-      </Card>
-    </Container>
-  );
+          <DataGrid
+            rows={operations ? operations : []}
+            columns={columns}
+            initialState={{
+              pagination: {
+                paginationModel: { page: 0, pageSize: 20 },
+              },
+            }}
+            pageSizeOptions={[10, 20, 50, 100]}
+            checkboxSelection
+            disableRowSelectionOnClick
+            onRowSelectionModelChange={handleSelectionChange}
+          />
+        </Card>
+      </Container>
+    );
+  } else {
+    return (
+      <Container>
+        <LinearProgress />
+      </Container>
+    )
+  }
 };
 
 export default Home;

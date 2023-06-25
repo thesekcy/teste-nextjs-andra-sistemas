@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic';
 import { AuthProvider } from '@/contexts/Auth/AuthProveider'
 import "../styles/global.scss"
 import { ThemeProvider } from '@/contexts/Theme/ThemeProveider';
+import { OperationsProvider } from '@/contexts/Operations/OperationsProveider';
 
 const DynamicPrivateRoute = dynamic(() => import('@/components/PrivateRoute'), { ssr: false });
 const DynamicPublicRoute = dynamic(() => import('@/components/PublicRoute'), { ssr: false });
@@ -37,9 +38,11 @@ export default function RootLayout({
           {!isPublicPage && (
             <ThemeProvider>
               <AuthProvider>
-                <DynamicPrivateRoute>
-                  {children}
-                </DynamicPrivateRoute>
+                <OperationsProvider>
+                  <DynamicPrivateRoute>
+                    {children}
+                  </DynamicPrivateRoute>
+                </OperationsProvider>
               </AuthProvider>
             </ThemeProvider>
           )}

@@ -7,10 +7,12 @@ import { AuthContext } from '@/contexts/Auth/AuthContext';
 import { useApi } from '@/hooks/useApi';
 import Swal from 'sweetalert2'
 import FormCreateOrEditComponent from '@/components/FormCreateOrEditComponent';
+import { OperationsContext } from '@/contexts/Operations/OperationsContext';
 
 export default function RootLayout() {
   const [values, setValues] = useState<any>({})
   const auth = useContext(AuthContext)
+  const { attOperation } = useContext(OperationsContext)
   const api = useApi()
   const token = auth.getToken()
   const { push } = useRouter();
@@ -38,14 +40,17 @@ export default function RootLayout() {
   async function updateOperation(dataForm: createOrEditFormValues) {
     let dataOperation = {
       "idLista": 1,
-      "id": params.id,
+      "id": Number(params.id),
       ...dataForm
     }
 
     const token = auth.getToken();
     const res = await api.updateNatOperations(token!, dataOperation)
 
+
     if (res[0].status === 200) {
+      attOperation(dataOperation)
+
       Swal.fire({
         title: 'Sucesso!',
         text: 'Operação editada com sucesso.',
@@ -84,7 +89,7 @@ export default function RootLayout() {
     return (
       <>
         <Container>
-        <Typography variant="h5">Tela de manutenção - Editando <strong>{values.nmNatOperacao}</strong></Typography>
+          <Typography variant="h5">Tela de manutenção - Editando <strong>{values.nmNatOperacao}</strong></Typography>
           <Card className='mt-4 p-4'>
             <FormCreateOrEditComponent
               defaultValues={values}
