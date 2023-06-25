@@ -11,8 +11,7 @@ import Image from 'next/image';
 
 
 export const metadata = {
-  title: 'Login App Next.js',
-  description: 'Desc Login App Next.js',
+  title: 'Andra Sistemas - Teste | Login',
 }
 
 export default function LoginPage() {
@@ -73,7 +72,7 @@ export default function LoginPage() {
                 type={showPassword ? 'text' : 'password'}
                 InputProps={{
                   endAdornment: (
-                  <InputAdornment position = "end" >
+                    <InputAdornment position="end" >
                       <IconButton
                         aria-label="toggle password visibility"
                         onClick={handleClickShowPassword}
@@ -82,32 +81,32 @@ export default function LoginPage() {
                       >
                         {showPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
-                  </InputAdornment>
-            )
+                    </InputAdornment>
+                  )
                 }}
 
               />
-            {errors.password && (
-              <Typography color="error" variant="body2">
-                {errors.password.message}
-              </Typography>
-            )}
-          </Stack>
+              {errors.password && (
+                <Typography color="error" variant="body2">
+                  {errors.password.message}
+                </Typography>
+              )}
+            </Stack>
 
-          <Button
-            fullWidth
-            size="large"
-            sx={{ mt: 3 }}
-            type="submit"
-            variant="contained"
-            disabled={auth.authLoading}
-            style={{backgroundColor: '#279574', boxShadow: 'none'}}
-          >
-            {auth.authLoading ? 'Entrando...' : 'Entrar na plataforma'}
-          </Button>
-        </form>
-      </Container>
-    </div>
+            <Button
+              fullWidth
+              size="large"
+              sx={{ mt: 3 }}
+              type="submit"
+              variant="contained"
+              disabled={auth.authLoading}
+              style={{ backgroundColor: '#279574', boxShadow: 'none' }}
+            >
+              {auth.authLoading ? 'Entrando...' : 'Entrar na plataforma'}
+            </Button>
+          </form>
+        </Container>
+      </div>
     </div >
   )
 

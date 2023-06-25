@@ -9,8 +9,7 @@ import Swal from 'sweetalert2'
 import FormCreateOrEditComponent from '@/components/FormCreateOrEditComponent';
 
 export const metadata = {
-  title: 'App Next.js',
-  description: 'Desc App Next.js',
+  title: 'Andra Sistemas - Teste | Criar',
 }
 
 export default function RootLayout() {

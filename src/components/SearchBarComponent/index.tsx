@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TextField, Button } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
+import { NatOperacao } from '@/types';
 
-const SearchBarComponent = ({ nmNatOperationFilter, setNmNatOperationFilter, searchOperation }) => {
+interface SearchBarProps {
+  nmNatOperationFilter: NatOperacao;
+  setNmNatOperationFilter: React.Dispatch<React.SetStateAction<NatOperacao>>;
+  searchOperation: () => void;
+}
+
+const SearchBarComponent = ({ nmNatOperationFilter, setNmNatOperationFilter, searchOperation }: SearchBarProps) => {
   return (
     <div className="filters d-flex gap-2">
       <div className="search d-flex">
